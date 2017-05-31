@@ -1,0 +1,40 @@
+version: '2'
+services:
+    mysql:
+      image: mysql:5.7
+      environment:
+        - MYSQL_ROOT_PASSWORD=123456
+        - MYSQL_PASSWORD=123456
+        - MYSQL_DATABASE=symfony
+      ports:
+        - "3306:3306"
+      volumes:
+        - "./../db/57/:/var/lib/mysql"
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
+        - mysql:mysql
+      environment:
+        - PMA_ARBITRARY=1
+      restart: always
+      ports:
+       - "8089:80"
+    php:
+      build: .
+      links:
+       - mysql:mysql
+      ports:
+       - "9000:9000"
+      volumes:
+       - "./:/var/www/html/"
+    nginx:
+      image: nginx
+      links:
+       - php:fpm
+       - mysql:mysql
+      ports:
+       - "8088:80"
+      volumes:
+       - "./:/var/www/html/"
+       - "./../conf/nginx/conf.d/:/etc/nginx/conf.d/"
+       - "./../log/nginx/:/var/log/nginx/"

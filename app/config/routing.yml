@@ -1,0 +1,14 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+worker_registration:
+    path:  /register/worker
+    defaults: { _controller: AppBundle:RegistrationWorker:register }
+
+employer_registration:
+    path:  /register/employer
+    defaults: { _controller: AppBundle:RegistrationEmployer:register }
